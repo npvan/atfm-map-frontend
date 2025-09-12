@@ -5,7 +5,7 @@ type LayerTogglesProps = {
 	toggles: {
 		firs: boolean;
 		enroute: boolean;
-		tma: boolean;
+		// tma: boolean;
 		airports: boolean;
 		ats: boolean;
 		sids: boolean;

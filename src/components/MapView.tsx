@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import enrouteData from "../data/enroute-sectors.json";
-import airportData from "../data/airports.json";
+// import airportData from "../data/airports.json";
 import atsData from "../data/ats-routes.json";
 import sidData from "../data/sids.json";
 import starData from "../data/stars.json";
@@ -23,7 +23,7 @@ type MapViewProps = {
 	visibleLayers: {
 		firs: boolean;
 		enroute: boolean;
-		tma: boolean;
+		// tma: boolean;
 		airports: boolean;
 		ats: boolean;
 		sids: boolean;
@@ -35,7 +35,7 @@ type MapViewProps = {
 
 const defaultStyle = {
 	color: "#3388ff",
-	weight: 1,
+	weight: 2,
 	fillOpacity: 0.01,
 };
 
@@ -47,12 +47,9 @@ export default function MapView({
 	const mapRef = useRef<L.Map>(null);
 	const decoratorsRef = useRef<L.Layer[]>([]);
 
-	const { data: firData, loading: firLoading, error: firError } = useFirs();
-	const {
-		data: airportData,
-		loading: airportLoading,
-		error: airportError,
-	} = useAirports(selectedFirId);
+	const { data: firData, error: firError } = useFirs();
+	const { data: airportData, error: airportError } =
+		useAirports(selectedFirId);
 
 	useEffect(() => {
 		if (firData) {
@@ -114,7 +111,7 @@ export default function MapView({
 		>,
 		layer: L.Layer
 	) => {
-		const { name, long_name, id } = feature.properties;
+		const { name, id } = feature.properties;
 
 		layer.bindTooltip(`FIR: ${name}`, {
 			direction: "top",
@@ -254,7 +251,7 @@ export default function MapView({
 		<MapContainer
 			ref={mapRef}
 			center={[1.352083, 103.819836]}
-			zoom={6}
+			zoom={4.5}
 			style={{ height: "100%", width: "100%" }}
 		>
 			<TileLayer
@@ -266,11 +263,7 @@ export default function MapView({
 				<GeoJSON
 					data={firData}
 					onEachFeature={onEachFir}
-					style={() => ({
-						color: "#14c2d2",
-						weight: 1,
-						fillOpacity: 0.1,
-					})}
+					style={defaultStyle}
 				/>
 			)}
 
